@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarea de práctica · Malentendidos en la consulta · Español Médico A2 · Clase 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--graf:#36454F;--graf-d:#1F262B;--amber:#E8A33D;--amber-d:#B57B1E;--mustard:#F7EED9;--mustard-d:#F0E2C2;--ink:#2E3438;--muted:#7C878E;--ok:#27AE60;--bad:#C0392B;--teal:#2E9C82}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--mustard);color:var(--ink);min-height:100vh}
+.wrap{max-width:1040px;margin:0 auto;padding:24px 20px 60px}
+header{background:var(--graf);border-radius:16px;padding:28px 32px;color:#fff;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-70px;top:-90px;width:240px;height:240px;border-radius:50%;background:rgba(232,163,61,.22)}
+.kicker{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--amber);text-transform:uppercase}
+h1{font-family:'Fraunces',Cambria,serif;font-size:clamp(24px,5vw,36px);margin:6px 0 4px}
+.sub{color:#cfd6da;font-size:14px}
+/* tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 18px}
+.tab{border:none;border-radius:999px;padding:10px 16px;font:600 13.5px 'Inter';cursor:pointer;background:#fff;color:var(--graf);box-shadow:0 1px 3px rgba(31,38,43,.08);transition:.15s}
+.tab:hover{transform:translateY(-1px)}
+.tab.active{background:var(--graf);color:#fff}
+.tab .n{display:inline-block;background:var(--amber);color:var(--graf-d);border-radius:50%;width:20px;height:20px;line-height:20px;text-align:center;font-size:11.5px;margin-right:7px}
+.tab.active .n{background:var(--amber)}
+.panel{display:none}
+.panel.show{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+/* cards */
+.card{background:#fff;border-radius:16px;padding:20px 24px;box-shadow:0 1px 3px rgba(31,38,43,.08);margin-bottom:16px}
+.card h2{font-family:'Fraunces',serif;font-size:21px;color:var(--graf);margin-bottom:4px}
+.card .lead{font-size:13.5px;color:var(--muted);margin-bottom:14px}
+.hint{background:var(--mustard);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--graf);margin-bottom:14px}
+.hint b{color:var(--amber-d)}
+/* dialogue bubbles */
+.chat{display:flex;flex-direction:column;gap:9px}
+.msg{max-width:82%;border-radius:14px;padding:10px 14px;font-size:14.5px;line-height:1.5;position:relative}
+.msg .who{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.msg.pac{align-self:flex-start;background:var(--mustard);border:1.5px solid var(--mustard-d)}
+.msg.pac .who{color:var(--amber-d)}
+.msg.med{align-self:flex-end;background:#eef3f2;border:1.5px solid #dde7e5}
+.msg.med .who{color:var(--graf)}
+.expr{background:rgba(232,163,61,.28);border-bottom:2px solid var(--amber-d);border-radius:4px;padding:0 3px;font-weight:600;cursor:pointer}
+.expr:hover{background:rgba(232,163,61,.45)}
+.expl{display:none;margin-top:7px;background:#fff;border:1.5px dashed var(--amber);border-radius:9px;padding:7px 10px;font-size:12.5px;color:var(--graf)}
+.expl b{color:var(--amber-d)}
+.msg.open .expl{display:block}
+/* quiz */
+.q{margin:16px 0 4px}
+.q .qt{font-weight:700;color:var(--graf);font-size:14.5px;margin-bottom:8px}
+.q .qt .num{color:var(--amber-d);margin-right:6px}
+.opt{display:block;width:100%;text-align:left;background:var(--mustard);border:2px solid var(--mustard-d);border-radius:10px;padding:9px 13px;font:500 13.5px 'Inter';color:var(--ink);cursor:pointer;margin-bottom:7px;transition:.12s}
+.opt:hover{border-color:var(--amber)}
+.opt.sel{border-color:var(--graf);background:#fff}
+.opt.right{background:#e8f6ee;border-color:var(--ok);color:#14532d;font-weight:600}
+.opt.wrong{background:#fbeae8;border-color:var(--bad);color:#7f1d1d}
+.btn{border:none;border-radius:12px;padding:11px 20px;font:600 14px 'Inter';cursor:pointer;transition:.15s;background:var(--amber);color:var(--graf-d);margin-top:8px}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:#fff;color:var(--graf);box-shadow:0 1px 3px rgba(31,38,43,.08)}
+.score{display:none;margin-top:12px;background:var(--graf);color:#fff;border-radius:12px;padding:13px 18px;font-size:14px}
+.score.show{display:block}
+.score b{color:var(--amber)}
+/* matching game */
+.matchgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:680px){.matchgrid{grid-template-columns:1fr}}
+.mcol .lbl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.mitem{display:block;width:100%;text-align:left;background:var(--mustard);border:2px solid var(--mustard-d);border-radius:10px;padding:10px 13px;font:600 13.5px 'Inter';color:var(--graf);cursor:pointer;margin-bottom:8px;transition:.12s}
+.mitem.def{font-weight:500;font-size:13px}
+.mitem:hover{border-color:var(--amber)}
+.mitem.sel{border-color:var(--graf);background:#fff}
+.mitem.done{background:#e8f6ee;border-color:var(--ok);color:#14532d;cursor:default;opacity:.85}
+.mitem.shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.pill{display:inline-block;font:600 12.5px 'Inter';color:var(--graf);background:#fff;border-radius:999px;padding:7px 14px;box-shadow:0 1px 3px rgba(31,38,43,.08);margin-bottom:12px}
+/* role-play */
+.sit{background:#fff;border-radius:16px;padding:18px 22px;box-shadow:0 1px 3px rgba(31,38,43,.08);margin-bottom:14px}
+.sit .tag{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-d);margin-bottom:4px}
+.sit h3{font-family:'Fraunces',serif;font-size:18px;color:var(--graf);margin-bottom:8px}
+.sit p{font-size:14px;line-height:1.55;margin-bottom:8px}
+.sit .mal{font-size:13px;background:var(--mustard);border-radius:9px;padding:8px 12px}
+.sit .mal b{color:var(--graf)}
+footer{text-align:center;margin-top:34px;font-size:12.5px;color:var(--muted)}
+button:focus-visible,.expr:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Español Médico A2 · Clase 4 · ¿Me puede explicar de nuevo?</div>
+    <h1>Tarea de práctica: malentendidos en la consulta</h1>
+    <div class="sub">Lee los diálogos, toca las expresiones destacadas, responde los cuestionarios y practica el role-play</div>
+  </header>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-p="p1"><span class="n">1</span>Dolor de estómago</button>
+    <button class="tab" data-p="p2"><span class="n">2</span>Oftalmología</button>
+    <button class="tab" data-p="p3"><span class="n">3</span>Tos y respiración</button>
+    <button class="tab" data-p="p4"><span class="n">4</span>Juego de expresiones</button>
+    <button class="tab" data-p="p5"><span class="n">5</span>Role-play</button>
+  </div>
+
+  <!-- ============ PANEL 1: estómago ============ -->
+  <section class="panel show" id="p1">
+    <div class="card">
+      <h2>Consulta por dolor de estómago</h2>
+      <div class="lead">Medicina general · el paciente usa una palabra popular que el médico no conoce</div>
+      <div class="hint"><b>Cómo se practica:</b> lee el diálogo → toca las expresiones <span class="expr" tabindex="0" style="cursor:default">destacadas</span> para ver qué significan → responde el cuestionario de abajo.</div>
+      <div class="chat" id="chat1"></div>
+    </div>
+    <div class="card">
+      <h2>Comprensión</h2>
+      <div class="lead">Elige la respuesta correcta y pulsa «Comprobar»</div>
+      <div id="quiz1"></div>
+      <button class="btn" onclick="checkQuiz('quiz1')">✓ Comprobar</button>
+      <button class="btn ghost" onclick="resetQuiz('quiz1')">↩︎ Reiniciar</button>
+      <div class="score" id="quiz1-score"></div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 2: oftalmología ============ -->
+  <section class="panel" id="p2">
+    <div class="card">
+      <h2>En la consulta de oftalmología</h2>
+      <div class="lead">Revisión de la vista · «mal de ojo» no es lo mismo que «un ojo malo»</div>
+      <div class="hint"><b>Cómo se practica:</b> lee el diálogo → toca las expresiones destacadas → responde el cuestionario.</div>
+      <div class="chat" id="chat2"></div>
+    </div>
+    <div class="card">
+      <h2>Comprensión</h2>
+      <div class="lead">Elige la respuesta correcta y pulsa «Comprobar»</div>
+      <div id="quiz2"></div>
+      <button class="btn" onclick="checkQuiz('quiz2')">✓ Comprobar</button>
+      <button class="btn ghost" onclick="resetQuiz('quiz2')">↩︎ Reiniciar</button>
+      <div class="score" id="quiz2-score"></div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 3: tos ============ -->
+  <section class="panel" id="p3">
+    <div class="card">
+      <h2>Revisión por tos y dificultad al respirar</h2>
+      <div class="lead">La paciente usa muchas expresiones coloquiales · el médico pide aclaraciones</div>
+      <div class="hint"><b>Cómo se practica:</b> lee el diálogo → toca las expresiones destacadas → responde el cuestionario.</div>
+      <div class="chat" id="chat3"></div>
+    </div>
+    <div class="card">
+      <h2>Comprensión</h2>
+      <div class="lead">Elige la respuesta correcta y pulsa «Comprobar»</div>
+      <div id="quiz3"></div>
+      <button class="btn" onclick="checkQuiz('quiz3')">✓ Comprobar</button>
+      <button class="btn ghost" onclick="resetQuiz('quiz3')">↩︎ Reiniciar</button>
+      <div class="score" id="quiz3-score"></div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 4: matching ============ -->
+  <section class="panel" id="p4">
+    <div class="card">
+      <h2>Juego: ¿qué significa cada expresión?</h2>
+      <div class="lead">Toca una expresión y después su significado. Si aciertas, la pareja se pone verde.</div>
+      <span class="pill" id="matchleft">Parejas restantes: 8</span>
+      <div class="matchgrid">
+        <div class="mcol"><div class="lbl">Expresiones</div><div id="mExpr"></div></div>
+        <div class="mcol"><div class="lbl">Significados</div><div id="mDef"></div></div>
+      </div>
+      <button class="btn ghost" onclick="buildMatch()">🔀 Volver a jugar</button>
+      <div class="score" id="match-score"></div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 5: role-play ============ -->
+  <section class="panel" id="p5">
+    <div class="card">
+      <h2>Role-play improvisado: malentendidos</h2>
+      <div class="lead">En parejas: uno hace de paciente y otro de profesional de la salud. Detectad el malentendido, pedid aclaraciones y solucionadlo. Después, cambiad de rol.</div>
+    </div>
+    <div class="sit"><div class="tag">Situación 1 · Cardiología</div><h3>«Tengo mucha presión»</h3><p>El paciente dice que tiene «mucha presión» y el profesional cree que se refiere a la presión arterial, pero en realidad habla de estrés emocional.</p><div class="mal"><b>Malentendido:</b> presión física vs. presión emocional</div></div>
+    <div class="sit"><div class="tag">Situación 2 · Gastroenterología</div><h3>«Estoy intoxicado»</h3><p>El paciente dice que está «intoxicado». El médico piensa que es envenenamiento, pero el paciente quiere decir que comió algo en mal estado y le duele el estómago.</p><div class="mal"><b>Malentendido:</b> intoxicación alimentaria vs. envenenamiento</div></div>
+    <div class="sit"><div class="tag">Situación 3 · Pediatría</div><h3>«Mi hijo está constipado»</h3><p>El padre o la madre dice que el niño está «constipado». El médico piensa que es estreñimiento, pero se refiere a que está resfriado.</p><div class="mal"><b>Malentendido:</b> estreñimiento vs. resfriado</div></div>
+    <div class="sit"><div class="tag">Situación 4 · Neurología / Urgencias</div><h3>«Anoche me dio un ataque»</h3><p>El paciente dice que tuvo «un ataque». El personal de salud cree que fue un derrame cerebral, pero en realidad fue un ataque de pánico.</p><div class="mal"><b>Malentendido:</b> ataque cerebral vs. ataque de ansiedad</div></div>
+    <div class="card">
+      <h2>Frases útiles</h2>
+      <p style="font-size:14px;line-height:1.7">«Quiero asegurarme de haber entendido bien…» · «Cuando dice ___, ¿a qué se refiere exactamente?» · «Gracias por aclararlo.» · «Es importante diferenciar entre…» · «Voy a explicarle qué está pasando…»</p>
+    </div>
+  </section>
+
+  <footer>Curso <b>Español Médico A2</b> · AWLCI · Clase 4 · Tarea de práctica<br>© Catalina Espinosa</footer>
+</div>
+
+<script>
+// ---------- datos ----------
+const EXPL = {
+  "empacho":"Palabra popular: indigestión. Sensación de que la comida «se queda pegada» y no baja bien.",
+  "pegada":"El paciente describe que la comida no avanza, que se siente muy pesado.",
+  "mal de ojo":"Creencia popular: daño o desgracia causados por la mirada de otra persona. ¡No es lo mismo que tener un ojo malo!",
+  "un ojo malo":"Tener un problema en un ojo. Es lo que el paciente quería decir en realidad.",
+  "hecha polvo":"Sentirse muy mal, sin fuerzas, agotada. No significa haber tenido un accidente.",
+  "pecho cargado":"Sensación de congestión o presión en el pecho.",
+  "un camión encima":"Manera exagerada de describir una opresión torácica muy fuerte.",
+  "no levanto cabeza":"No recuperarse, seguir igual o peor. No tiene que ver con el cuello.",
+  "a tope":"Con muchísimo trabajo, sin parar. No se refiere a trabajar en altura."
+};
+
+const D1 = [
+ ["pac","Paciente","Buenas tardes, doctor. Vengo porque me duele mucho el estómago."],
+ ["med","Médico","Buenas tardes. ¿Desde cuándo tiene dolor?"],
+ ["pac","Paciente","Desde hace unos días, especialmente después de comer."],
+ ["med","Médico","Entiendo. ¿El dolor es constante o aparece en momentos específicos?"],
+ ["pac","Paciente","Aparece después de comer, y a veces siento acidez."],
+ ["med","Médico","Puede ser gastritis o reflujo. ¿Ha tomado algún medicamento?"],
+ ["pac","Paciente","No, pero mi abuela dice que tengo [empacho]."],
+ ["med","Médico","¿Empacho? ¿Puede explicarme qué significa «empacho»?"],
+ ["pac","Paciente","Sí, como cuando la comida se queda [pegada] y no baja bien y me siento muy pesado."],
+ ["med","Médico","Ah, entiendo. En términos médicos, podría ser indigestión. Vamos a hacer algunas preguntas más y revisar su dieta."],
+ ["pac","Paciente","Está bien. ¿Necesito algún tratamiento?"],
+ ["med","Médico","Sí, le voy a recomendar cambios en la alimentación y un medicamento para reducir la acidez."],
+ ["pac","Paciente","Perfecto, gracias doctor."],
+ ["med","Médico","De nada. Si los síntomas continúan, regrese para hacer más estudios."],
+ ["pac","Paciente","Claro, muchas gracias. ¡Hasta luego!"]
+];
+
+const D2 = [
+ ["pac","Paciente","Buenas tardes, doctor. Vine para mi revisión anual de la vista."],
+ ["med","Oftalmólogo","Buenas tardes. Vamos a empezar con la prueba de agudeza visual. ¿Ha notado algún cambio en su visión últimamente?"],
+ ["pac","Paciente","Sí, he notado que veo borroso cuando leo de cerca."],
+ ["med","Oftalmólogo","Entiendo. Por favor, lea las letras en la tabla de visión. (Simula la prueba). Parece que necesita gafas para la lectura. Le voy a recetar unas lentes."],
+ ["pac","Paciente","¿Lentes? ¿Pero doctor, no sería mejor algo más fuerte? Creo que tengo [mal de ojo]."],
+ ["med","Oftalmólogo","¿Mal de ojo? Pensé que hablábamos de su visión. ¿Cree que alguien le ha echado una maldición?"],
+ ["pac","Paciente","No, no. Me refiero a que tengo [un ojo malo] y eso afecta mi visión."],
+ ["med","Oftalmólogo","Ah, ya entiendo. Usted quiso decir que tiene un ojo malo, no mal de ojo. Eso puede causar problemas temporales en la visión. Las gafas para lectura le ayudarán, pero también debo examinar más a fondo ese ojo."],
+ ["pac","Paciente","Gracias, doctor. Disculpe la confusión. ¿Me puede explicar de nuevo lo de las gafas?"],
+ ["med","Oftalmólogo","Claro, las gafas son específicamente para ayudarle a ver mejor de cerca cuando esté leyendo. Puede usarlas solo cuando lo necesite. Y si el problema con su ojo persiste, es importante que regrese para una revisión más detallada."],
+ ["pac","Paciente","Entendido. Muchas gracias por su ayuda, doctor."],
+ ["med","Oftalmólogo","De nada. Cuídese y cualquier otra duda, no dude en venir a consultarme. ¡Que tenga un buen día!"]
+];
+
+const D3 = [
+ ["med","Médico","Buenos días, señora. ¿Qué la trae por aquí hoy?"],
+ ["pac","Paciente","Buenos días, doctor. Pues, la verdad, estoy [hecha polvo]. No paro de toser desde hace días y siento que me falta el aire."],
+ ["med","Médico","¿Hecha polvo? ¿Tuvo un accidente o caída?"],
+ ["pac","Paciente","No, no. Solo quiero decir que me siento muy mal, sin fuerzas."],
+ ["med","Médico","Ah, ya veo. Gracias por aclararlo. ¿Tiene la tos todo el día o solo en ciertos momentos?"],
+ ["pac","Paciente","Es sobre todo por la noche. Me deja sin dormir. Y por la mañana me levanto con el [pecho cargado]."],
+ ["med","Médico","¿El pecho está… cargado? ¿Tiene objetos pesados o sensación de presión?"],
+ ["pac","Paciente","Sensación de presión, sí. Como si tuviera [un camión encima]."],
+ ["med","Médico","¿Un camión encima? ¿Se refiere a que siente opresión torácica?"],
+ ["pac","Paciente","Sí, eso. ¡Una presión horrible! Y a veces me da fiebre, pero no siempre."],
+ ["med","Médico","¿Ha tenido mocos, flemas?"],
+ ["pac","Paciente","Sí, y a veces son verdosos. Ya llevo una semana así y [no levanto cabeza]."],
+ ["med","Médico","¿No levanta la cabeza? ¿Le duele el cuello?"],
+ ["pac","Paciente","No, doctor. Solo quiero decir que no me recupero, que sigo igual o peor."],
+ ["med","Médico","Entiendo. Me disculpa, a veces me confunden esas formas de hablar. Vamos a auscultarla. (La examina). Tiene congestión en los pulmones. Podría ser una bronquitis. Le voy a recetar un jarabe para la tos y un broncodilatador; si no mejora, podríamos hacer una radiografía."],
+ ["pac","Paciente","¿Y puedo seguir trabajando? Estoy [a tope] en el trabajo ahora mismo."],
+ ["med","Médico","¿A tope? ¿Está trabajando en altura o con presión?"],
+ ["pac","Paciente","No, quiero decir que tengo mucho trabajo, que no paro."],
+ ["med","Médico","Ah, gracias. Pues le recomendaría descansar unos días. El cuerpo necesita tiempo para sanar."],
+ ["pac","Paciente","Tiene razón. Gracias, doctor. Me voy a cuidar."],
+ ["med","Médico","Me alegra oír eso. ¡Que se mejore pronto!"]
+];
+
+const QUIZ = {
+ quiz1: [
+  ["¿Por qué el paciente vino a la consulta?",["Porque le duele la cabeza","Porque le duele el estómago, sobre todo después de comer","Porque tiene fiebre alta"],1],
+  ["¿Qué dice la abuela del paciente?",["Que tiene «empacho»","Que tiene gripe","Que necesita una operación"],0],
+  ["¿Cómo resolvió el médico la confusión?",["Ignoró el comentario","Llamó a la abuela por teléfono","Pidió al paciente que explicara qué significa «empacho»"],2],
+  ["¿Qué tratamiento recomendó el médico?",["Cirugía inmediata","Cambios en la alimentación y un medicamento para la acidez","Solo reposo en cama"],1]
+ ],
+ quiz2: [
+  ["¿Por qué el paciente vino a la consulta?",["Para su revisión anual de la vista","Porque le duele un ojo","Para operarse"],0],
+  ["¿Qué problema tiene con su visión?",["Ve borroso de lejos","No distingue los colores","Ve borroso cuando lee de cerca"],2],
+  ["¿Qué malentendido ocurrió?",["El paciente no quería pagar","El médico entendió «mal de ojo» como una maldición","Confundieron al paciente con otro"],1],
+  ["¿Cómo se resolvió la confusión?",["El paciente aclaró que tiene «un ojo malo», no «mal de ojo»","El médico cambió de tema","No se resolvió"],0]
+ ],
+ quiz3: [
+  ["¿Por qué fue la paciente al médico?",["Por dolor de espalda","Por tos persistente y falta de aire","Por una revisión rutinaria"],1],
+  ["¿Qué significa «estoy hecha polvo»?",["Que tuvo un accidente","Que está sucia","Que se siente muy mal, sin fuerzas"],2],
+  ["¿Qué diagnóstico le dio el médico?",["Posible bronquitis","Neumonía grave","Asma crónica"],0],
+  ["¿Qué le recomendó el médico?",["Seguir trabajando «a tope»","Hacer más ejercicio","Descansar unos días"],2]
+ ]
+};
+
+const PAIRS = [
+ ["empacho","indigestión: la comida «no baja» y te sientes pesado"],
+ ["mal de ojo","creencia: daño causado por la mirada de otra persona"],
+ ["tener un ojo malo","tener un problema en un ojo"],
+ ["estar hecha polvo","sentirse muy mal, sin fuerzas"],
+ ["pecho cargado","congestión o presión en el pecho"],
+ ["un camión encima","opresión torácica muy fuerte"],
+ ["no levantar cabeza","no recuperarse, seguir igual o peor"],
+ ["estar a tope","tener muchísimo trabajo, no parar"]
+];
+
+// ---------- tabs ----------
+document.getElementById('tabs').addEventListener('click', e=>{
+  const b=e.target.closest('.tab'); if(!b) return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.p));
+});
+
+// ---------- diálogos ----------
+function renderChat(id, data){
+  const el=document.getElementById(id);
+  el.innerHTML='';
+  data.forEach(([cls,who,text])=>{
+    const d=document.createElement('div'); d.className='msg '+cls;
+    let html='<span class="who">'+who+'</span>';
+    let expls=[];
+    html+=text.replace(/\[([^\]]+)\]/g,(m,k)=>{
+      expls.push(k);
+      return '<span class="expr" tabindex="0" role="button" aria-label="Ver significado de '+k+'">«'+k+'»</span>';
+    });
+    d.innerHTML=html;
+    expls.forEach(k=>{
+      const e=document.createElement('div'); e.className='expl';
+      e.innerHTML='<b>«'+k+'»</b> — '+(EXPL[k]||'');
+      d.appendChild(e);
+    });
+    if(expls.length){
+      d.querySelectorAll('.expr').forEach(sp=>{
+        const toggle=()=>d.classList.toggle('open');
+        sp.addEventListener('click',toggle);
+        sp.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();toggle();}});
+      });
+    }
+    el.appendChild(d);
+  });
+}
+renderChat('chat1',D1); renderChat('chat2',D2); renderChat('chat3',D3);
+
+// ---------- quiz ----------
+function renderQuiz(id){
+  const el=document.getElementById(id);
+  el.innerHTML='';
+  QUIZ[id].forEach((q,qi)=>{
+    const d=document.createElement('div'); d.className='q'; d.dataset.correct=q[2];
+    d.innerHTML='<div class="qt"><span class="num">'+(qi+1)+'.</span>'+q[0]+'</div>';
+    q[1].forEach((op,oi)=>{
+      const b=document.createElement('button'); b.className='opt'; b.textContent=op; b.dataset.i=oi;
+      b.onclick=()=>{ if(d.classList.contains('locked'))return;
+        d.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel')); b.classList.add('sel'); };
+      d.appendChild(b);
+    });
+    el.appendChild(d);
+  });
+}
+Object.keys(QUIZ).forEach(renderQuiz);
+
+function checkQuiz(id){
+  const el=document.getElementById(id);
+  let ok=0,answered=0,total=QUIZ[id].length;
+  el.querySelectorAll('.q').forEach(d=>{
+    const c=+d.dataset.correct, sel=d.querySelector('.opt.sel');
+    d.classList.add('locked');
+    d.querySelectorAll('.opt').forEach(o=>{
+      if(+o.dataset.i===c) o.classList.add('right');
+    });
+    if(sel){ answered++;
+      if(+sel.dataset.i===c) ok++;
+      else sel.classList.add('wrong');
+    }
+  });
+  const s=document.getElementById(id+'-score'); s.classList.add('show');
+  if(answered===0){ s.innerHTML='Elige primero tus respuestas y vuelve a comprobar.'; el.querySelectorAll('.q').forEach(d=>{d.classList.remove('locked');d.querySelectorAll('.opt').forEach(o=>o.classList.remove('right'));}); return; }
+  const msg = ok===total? '🏆 ¡Perfecto!' : ok>=total-1 ? '💪 ¡Casi!' : '📖 Relee el diálogo y vuelve a intentarlo';
+  s.innerHTML=msg+' — <b>'+ok+' de '+total+'</b> respuestas correctas.'+(answered<total?' ('+(total-answered)+' sin responder.)':'');
+}
+function resetQuiz(id){
+  renderQuiz(id);
+  const s=document.getElementById(id+'-score'); s.classList.remove('show'); s.innerHTML='';
+}
+
+// ---------- matching ----------
+let selE=null, selD=null, remaining=8;
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function buildMatch(){
+  selE=null;selD=null;remaining=PAIRS.length;
+  document.getElementById('matchleft').textContent='Parejas restantes: '+remaining;
+  const ms=document.getElementById('match-score'); ms.classList.remove('show'); ms.innerHTML='';
+  const eCol=document.getElementById('mExpr'), dCol=document.getElementById('mDef');
+  eCol.innerHTML='';dCol.innerHTML='';
+  shuffle(PAIRS.map((_,i)=>i)).forEach(i=>{
+    const b=document.createElement('button');b.className='mitem';b.textContent='«'+PAIRS[i][0]+'»';b.dataset.i=i;
+    b.onclick=()=>pick(b,'e');eCol.appendChild(b);
+  });
+  shuffle(PAIRS.map((_,i)=>i)).forEach(i=>{
+    const b=document.createElement('button');b.className='mitem def';b.textContent=PAIRS[i][1];b.dataset.i=i;
+    b.onclick=()=>pick(b,'d');dCol.appendChild(b);
+  });
+}
+function pick(b,side){
+  if(b.classList.contains('done'))return;
+  if(side==='e'){ if(selE)selE.classList.remove('sel'); selE=(selE===b?null:b); if(selE)selE.classList.add('sel'); }
+  else { if(selD)selD.classList.remove('sel'); selD=(selD===b?null:b); if(selD)selD.classList.add('sel'); }
+  if(selE&&selD){
+    if(selE.dataset.i===selD.dataset.i){
+      selE.classList.remove('sel');selD.classList.remove('sel');
+      selE.classList.add('done');selD.classList.add('done');
+      remaining--; document.getElementById('matchleft').textContent='Parejas restantes: '+remaining;
+      if(remaining===0){ const ms=document.getElementById('match-score'); ms.classList.add('show'); ms.innerHTML='🏆 ¡Perfecto! Has emparejado las <b>8 expresiones</b>. Ya puedes usarlas (¡y explicarlas!) en la consulta.'; }
+    } else {
+      selE.classList.add('shake');selD.classList.add('shake');
+      const a=selE,c=selD;
+      setTimeout(()=>{a.classList.remove('shake','sel');c.classList.remove('shake','sel');},320);
+    }
+    selE=null;selD=null;
+  }
+}
+buildMatch();
+</script>
+</body>
+</html>
